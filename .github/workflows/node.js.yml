@@ -34,6 +34,4 @@ jobs:
     - name: npm install
       run: npm install
     - name: build
-      run: npm run test --if-present
-      env:
-        CI: false
+      run: run-script build
