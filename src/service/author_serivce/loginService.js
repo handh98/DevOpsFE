@@ -3,7 +3,7 @@ import { NOCOCID_API } from "../../constant/api_link_constant";
 import authHeader from "./authService";
 // eslint-disable-next-line no-unused-vars
 
-const NOCID_API_ACCOUNT = NOCOCID_API + "Accounts";
+const NOCID_API_ACCOUNT = NOCOCID_API + "Auth";
 class LoginSerivce {
   async login(loginRequest) {
     const response = await axios.post(
@@ -33,6 +33,7 @@ class LoginSerivce {
       { headers: authHeader() }
     );
   }
+
   register(signupRequest) {
     return axios.post(NOCID_API_ACCOUNT + "/register", signupRequest);
   }

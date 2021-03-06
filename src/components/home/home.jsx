@@ -22,36 +22,51 @@ export default class Home extends Component {
     }
 
     componentDidMount() {
-        const user = loginService.getCurrentUser();
-        if (user) {
-            employeeService.getEmployeeById(user.employeeId).then((res) => {
-                this.setState({
-                    employee: res.data,
-                    user: user
-                })
-            })
-        } else {
-            this.props.history.push('/');
-            window.location.reload();
-        }
-        const uri = ThirdPartiesService.getGitHubLoginURI();
-        this.setState({
-            gitHubLoginURI: uri
-        })
         let search = window.location.search;
+        console.log("search", search);
         let params = new URLSearchParams(search);
-        let id = params.get('thirdPartyId');
-        let username = params.get('username');
-        let state = params.get('state');
+        let jwt = params.get('jwt');
         
-        if (id && username && state) {
-            params = {
-                id: id,
-                state: state,
-                username: username
-            }
-            this.connectWithGitHub(params);
-        }
+        localStorage.setItem("jwt", jwt);
+        // let search = window.location.search;
+        // console.log("search", search);
+        // let params = new URLSearchParams(search);
+        // let account_id = params.get('account_id');
+        // let username = params.get('username');
+        // let jwt = params.get('jwt');
+        // console.log(params);
+        // const user = loginService.getCurrentUser();
+        // if (user) {
+        //     employeeService.getEmployeeById(user.employeeId).then((res) => {
+        //         this.setState({
+        //             employee: res.data,
+        //             user: user
+        //         })
+        //     })
+        // } else {
+        //     this.props.history.push('/');
+        //     window.location.reload();
+        // }
+        // const uri = ThirdPartiesService.getGitHubLoginURI();
+        // this.setState({
+        //     gitHubLoginURI: uri
+        // })
+        // let search = window.location.search;
+        // console.log("search", search);
+        // let params = new URLSearchParams(search);
+        // let account_id = params.get('account_id');
+        // let username = params.get('username');
+        // let jwt = params.get('jwt');
+        
+        // if (account_id && username && jwt) {
+        //     params = {
+        //         jwtToken: jwt,
+        //         tokenType: "Bearer",
+        //         accountId: account_id
+        //     }
+            
+        //     localStorage.setItem("user",params);
+        // }
     }
 
     connectWithGitHub = (params) => {

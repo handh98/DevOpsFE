@@ -81,7 +81,7 @@ export default class Login extends Component {
                         <a href="/register" className="float-right btn btn-outline-primary">Sign up</a>
                         <h4 className="card-title mb-4 mt-1">Sign in</h4>
                         <p>
-                            <a href={'' + url} className="btn btn-block btn-outline-primary"> Login via Github</a>
+                            <a href={'' + url} className="btn btn-block btn-outline-primary"> Login with Github</a>
                         </p>
                         <hr />
                         <Form onSubmit={this.login}>
