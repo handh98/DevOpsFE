@@ -5,6 +5,7 @@ import './sidebar/sidebarHome';
 import employeeService from '../../service/employee_service/employeeService';
 import ThirdPartiesService from '../../service/third_parties_service/thirdPartiesService'
 import githubRepoService from '../../service/githubrepository_service/githubRepoService';
+import accountService from '../../service/account_service/accountService';
 
 
 export default class Home extends Component {
@@ -17,6 +18,7 @@ export default class Home extends Component {
             gitHubLoginURI: "",
             successMessage: "",
             errMessage: "",
+            isConnected: ""
         }
 
     }
@@ -26,8 +28,17 @@ export default class Home extends Component {
         console.log("search", search);
         let params = new URLSearchParams(search);
         let jwt = params.get('jwt');
-        
-        localStorage.setItem("jwt", jwt);
+        this.setState({
+            isConnected: params.get('is_connected')
+        })
+        accountService.getAccount().then((res) => {
+            console.log(res.data[0].id)
+            accountService.getProjects(res.data[0].id).then((res) => {
+                console.log(res.data)
+            })
+        });
+
+
         // let search = window.location.search;
         // console.log("search", search);
         // let params = new URLSearchParams(search);
@@ -57,14 +68,14 @@ export default class Home extends Component {
         // let account_id = params.get('account_id');
         // let username = params.get('username');
         // let jwt = params.get('jwt');
-        
+
         // if (account_id && username && jwt) {
         //     params = {
         //         jwtToken: jwt,
         //         tokenType: "Bearer",
         //         accountId: account_id
         //     }
-            
+
         //     localStorage.setItem("user",params);
         // }
     }
@@ -74,14 +85,14 @@ export default class Home extends Component {
             this.setState({
                 successMessage: "You have already connect with git hub"
             });
-            githubRepoService.refreshRepository(params.id).then((response)=>{
+            githubRepoService.refreshRepository(params.id).then((response) => {
                 console.log(response.data);
-            },(error)=>{
+            }, (error) => {
                 console.log(error.response.data);
             })
         }, (error) => {
             this.setState({
-                errMessage : error.response.data.detail.message
+                errMessage: error.response.data.detail.message
             })
         });
     }
@@ -110,11 +121,15 @@ export default class Home extends Component {
             <div>
                 <h1> Hello {username}</h1>
                 <hr />
-                {this.state.successMessage.length > 0 ? (
+                {this.state.isConnected ?
+                    (<a href="/?flag=true">Connect to Nococid account </a>) :
+                    ('')
+                }
+                {/* {this.state.successMessage.length > 0 ? (
                     <h1>{this.state.successMessage}</h1>
                 ) : (
                         <a href={this.state.gitHubLoginURI}>Connect with Github</a>
-                    )}
+                    )} */}
                 <Form onSubmit={this.logout}>
                     <button type="submit">Logout</button>
                 </Form>
