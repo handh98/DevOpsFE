@@ -18,25 +18,27 @@ export default class Home extends Component {
             gitHubLoginURI: "",
             successMessage: "",
             errMessage: "",
-            isConnected: ""
+            isConnected: this.props.isConnectedParam
         }
 
     }
 
     componentDidMount() {
-        let search = window.location.search;
-        console.log("search", search);
-        let params = new URLSearchParams(search);
-        let jwt = params.get('jwt');
-        this.setState({
-            isConnected: params.get('is_connected')
-        })
-        accountService.getAccount().then((res) => {
-            console.log(res.data[0].id)
-            accountService.getProjects(res.data[0].id).then((res) => {
-                console.log(res.data)
-            })
-        });
+        // let search = window.location.search;
+        // console.log("search", search);
+        // let params = new URLSearchParams(search);
+        // // let jwt = params.get('jwt');
+
+        // this.setState({
+        //     isConnected: params.get('is_connected')
+        // })
+
+        // accountService.getAccount().then((res) => {
+        //     console.log(res.data[0].id)
+        //     accountService.getProjects(res.data[0].id).then((res) => {
+        //         console.log(res.data)
+        //     })
+        // });
 
 
         // let search = window.location.search;
@@ -121,8 +123,8 @@ export default class Home extends Component {
             <div>
                 <h1> Hello {username}</h1>
                 <hr />
-                {this.state.isConnected ?
-                    (<a href="/?flag=true">Connect to Nococid account </a>) :
+                {localStorage.getItem('is_connected') ?
+                    (<a href="/?submit=connect">Connect to Nococid account </a>) :
                     ('')
                 }
                 {/* {this.state.successMessage.length > 0 ? (

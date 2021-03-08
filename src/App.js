@@ -13,7 +13,8 @@ import loginService from "./service/author_serivce/loginService";
 import employeeService from "./service/employee_service/employeeService";
 import $ from "jquery";
 import Repository from "./components/repository/repository";
-import ProjectDetail from './components/project/projectDetail';
+import ProjectDetail from "./components/project/projectDetail";
+import AuthorizationFilter from './components/authorizationFilter/authorizationFilter';
 
 class App extends Component {
   constructor(props) {
@@ -59,15 +60,25 @@ class App extends Component {
                   </button>
                 </div>
               </nav>
+
               <BrowserRouter>
                 <Switch>
+                  <Route exact path={"/authorization_filter"} component={AuthorizationFilter} />
                   <Route exact path={"/home"} component={Home} />
                   <Route exact path={["/", "/login"]} component={Login} />
                   <Route path={"/register"} component={Register} />
                   <Route path={"/project"} component={Project} />
                   <Route path={"/create-project"} component={CreateProject} />
-                  <Route exact path="/repository/:thirdPartyId" component={Repository} />
-                  <Route exact path="/project-detail/:projectId" component={ProjectDetail} />
+                  <Route
+                    exact
+                    path="/repository/:thirdPartyId"
+                    component={Repository}
+                  />
+                  <Route
+                    exact
+                    path="/project-detail/:projectId"
+                    component={ProjectDetail}
+                  />
                   {/*
             
               <Route path="/admin" component={AdminBoard} />
@@ -94,6 +105,7 @@ class App extends Component {
         ) : (
           <BrowserRouter>
             <Switch>
+              <Route exact path={"/authorization_filter"} component={AuthorizationFilter} />
               <Route exact path={"/home"} component={Home} />
               <Route exact path={["/", "/login"]} component={Login} />
               <Route path={"/register"} component={Register} />

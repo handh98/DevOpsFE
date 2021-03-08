@@ -13,26 +13,34 @@ export default class Login extends Component {
             gitHubUri: String,
             email: String,
             password: String,
+            submit_login: String
         }
 
         this.handleEvent = this.handleEvent.bind(this)
     }
 
     componentDidMount() {
+        let search = window.location.search;
+        console.log("search", search);
+        let params = new URLSearchParams(search);
+        this.setState({
+            submit_login: params.get('submit')
+        })
+
         const uri = thirdPartiesService.loginWithGitHubURI();
-        if(uri){
+        if (uri) {
             this.setState({
-                gitHubUri : uri
+                gitHubUri: uri
             })
         }
-        let search = window.location.search;
-        let params = new URLSearchParams(search);
-        let foo = params.get('JwtToken');
-        if(foo){
-            this.props.history.push('/home');
-            window.location.reload();
-        }
-        console.log(foo);
+        // let search = window.location.search;
+        // let params = new URLSearchParams(search);
+        // let foo = params.get('JwtToken');
+        // if (foo) {
+        //     this.props.history.push('/home');
+        //     window.location.reload();
+        // }
+        // console.log(foo);
     }
 
     componentDidUpdate(prevProps, prevState, snapshot) { if (prevState.name !== this.state.name) { this.handler() } }
@@ -62,7 +70,7 @@ export default class Login extends Component {
     }
     login = (event) => {
         event.preventDefault();
-     
+
         let loginRequest = {
             Username: this.state.email,
             Password: this.state.password
@@ -72,8 +80,8 @@ export default class Login extends Component {
             window.location.reload();
         })
     }
-        render() {
-            const url = this.state.gitHubUri;
+    render() {
+        const url = this.state.gitHubUri;
         return (
             <div className="container col-md-3">
                 <div className="card">
@@ -81,7 +89,10 @@ export default class Login extends Component {
                         <a href="/register" className="float-right btn btn-outline-primary">Sign up</a>
                         <h4 className="card-title mb-4 mt-1">Sign in</h4>
                         <p>
-                            <a href={'' + url} className="btn btn-block btn-outline-primary"> Login with Github</a>
+                            {this.state.submit_login === 'connect' ? 
+                            <a href={'http://toan0701.ddns.net:9080/Nococid/api/Auth/connect-user?redirect_uri=https://localhost:3000/home'} className="btn btn-block btn-outline-primary"> Login with Github</a> :
+                             <a href={'' + url} className="btn btn-block btn-outline-primary"> Login with Github</a>}
+
                         </p>
                         <hr />
                         <Form onSubmit={this.login}>
