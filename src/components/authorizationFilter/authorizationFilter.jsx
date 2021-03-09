@@ -12,20 +12,13 @@ class AuthorizationFilter extends Component {
 
     componentDidMount() {
         let search = window.location.search;
-        console.log("search", search);
         let params = new URLSearchParams(search);
         let jwt = params.get('jwt');
-        localStorage.setItem("jwt", jwt);
+        localStorage.setItem('jwt', jwt);
         this.setState({
             isConnected: params.get('is_connected')
         })
         localStorage.setItem("is_connected", params.get('is_connected'));
-        accountService.getAccount().then((res) => {
-            console.log(res.data[0].id)
-            accountService.getProjects(res.data[0].id).then((res) => {
-                console.log(res.data)
-            })
-        });
         if (jwt) {
             this.props.history.push('/home');
             window.location.reload();
@@ -35,7 +28,7 @@ class AuthorizationFilter extends Component {
     render() {
         return (
             <div>
-                <Home isConnectedParam = {this.state.isConnected}/>
+
             </div>
         );
     }

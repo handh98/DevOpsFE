@@ -8,7 +8,7 @@ import "antd/dist/antd.css";
 import { Table, Input, Button, Space } from 'antd';
 import { SearchOutlined } from '@ant-design/icons';
 import './project_table.css';
-
+import accountService from '../../service/account_service/accountService'
 class Project extends Component {
     constructor(props) {
         super(props)
@@ -18,36 +18,28 @@ class Project extends Component {
             projects: [],
             searchText: '',
             searchedColumn: '',
+            accounntID: ''
         }
     }
 
     componentDidMount() {
-        const user = loginService.getCurrentUser();
-        if (user) {
-            employeeService.getEmployeeById(user.employeeId).then((res) => {
-                this.setState({
-                    employee: res.data,
-                    user: user
+        let account_id = localStorage.getItem('account_id');
+
+
+        projectService.getAllProject(account_id).then((response) => {
+            if (response.data.length) {
+                let projects = [];
+                response.data.map(project => {
+                    project.startDate = moment(project.startDate).format("DD-MM-YYYY")
+                    project.endDate = moment(project.endDate).format("DD-MM-YYYY")
+                    projects.push(project)
+                    return projects;
                 });
-            });
-            projectService.getAllProject().then((response) => {
-                if (response.data.length) {
-                    let projects = [];
-                    response.data.map(project => {
-                        project.startDate = moment(project.startDate).format("DD-MM-YYYY")
-                        project.endDate = moment(project.endDate).format("DD-MM-YYYY")
-                        projects.push(project)
-                        return projects;
-                    });
-                    this.setState({
-                        projects: projects
-                    })
-                }
-            })
-        } else {
-            this.props.history.push('/');
-            window.location.reload();
-        }
+                this.setState({
+                    projects: projects
+                })
+            }
+        })
     }
     getColumnSearchProps = dataIndex => ({
         filterDropdown: ({ setSelectedKeys, selectedKeys, confirm, clearFilters }) => (
@@ -118,8 +110,8 @@ class Project extends Component {
         this.setState({ searchText: '' });
     };
 
-    onRowClick=(event)=>{
-        this.props.history.push('/project-detail/'+event);
+    onRowClick = (event) => {
+        this.props.history.push('/project-detail/' + event);
     }
     componentWillUnmount() {
     }
@@ -168,15 +160,15 @@ class Project extends Component {
                         icon={<PlusCircleOutlined />}>
                     </Button>
                     <h6 className='mt-2'>Projects</h6>
-                    <div className='col'>do something</div>
+                    {/* <div className='col'>do something</div> */}
                 </div>
                 <div className="content mt-5">
-                    <Table className='thead-dark' columns={columns} dataSource={tableData} 
-                      onRow={(record, rowIndex) => {
-                        return {
-                          onClick: event => {this.onRowClick(record.id)}, // click row
-                        };
-                      }}
+                    <Table className='thead-dark' columns={columns} dataSource={tableData}
+                        onRow={(record, rowIndex) => {
+                            return {
+                                onClick: event => { this.onRowClick('?projectId='+ record.id) }, // click row
+                            };
+                        }}
                     />
                 </div>
             </div>

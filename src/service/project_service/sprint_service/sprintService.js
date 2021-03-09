@@ -2,7 +2,7 @@ import axios from "axios";
 import { NOCOCID_API } from "../../../constant/api_link_constant";
 import authHeader from "../../author_serivce/authService";
 
-const NOCOCID_API_SPRINT = NOCOCID_API + "Sprints";
+const NOCOCID_API_SPRINT = NOCOCID_API + "Accounts";
 
 class SprintService {
   createSprint(projectId, sprintRequest) {
@@ -12,10 +12,18 @@ class SprintService {
       { headers: authHeader() }
     );
   }
-  getAllSprint(projectId) {
-    return axios.get(NOCOCID_API_SPRINT + "?pid=" + projectId, {
-      headers: authHeader()
-    });
+  getAllSprint(projectId, accountId) {
+    return axios.get(
+      NOCOCID_API_SPRINT +
+        "/" +
+        accountId +
+        "/Projects/" +
+        projectId +
+        "/Sprints",
+      {
+        headers: authHeader(),
+      }
+    );
   }
 }
 

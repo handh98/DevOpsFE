@@ -19,23 +19,23 @@ class Sidebar extends Component {
     }
 
     componentDidMount() {
-        const user = loginService.getCurrentUser();
-        if (user) {
-            employeeService.getEmployeeById(user.employeeId).then((res) => {
-                this.setState({
-                    employee: res.data,
-                    user: user
-                })
-            })
-            thirdPartyAccountService.getThirdPartyAccount().then((res) => {
-                this.setState({
-                    thirdPartyAccounts: res.data
-                })
-            })
-        } else {
-            this.props.history.push('/');
-            window.location.reload();
-        }
+        // const user = loginService.getCurrentUser();
+        // if (user) {
+        //     employeeService.getEmployeeById(user.employeeId).then((res) => {
+        //         this.setState({
+        //             employee: res.data,
+        //             user: user
+        //         })
+        //     })
+        //     thirdPartyAccountService.getThirdPartyAccount().then((res) => {
+        //         this.setState({
+        //             thirdPartyAccounts: res.data
+        //         })
+        //     })
+        // } else {
+        //     this.props.history.push('/');
+        //     window.location.reload();
+        // }
     }
 
 

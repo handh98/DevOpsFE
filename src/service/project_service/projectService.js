@@ -2,21 +2,30 @@ import axios from "axios";
 import { NOCOCID_API } from "../../constant/api_link_constant";
 import authHeader from "../author_serivce/authService";
 
-const NOCOCID_API_PROJECT = NOCOCID_API + "Projects";
+const NOCOCID_API_PROJECT = NOCOCID_API + "Accounts";
 
 class ProjectService {
-  create(projectRequest) {
-    return axios.post(NOCOCID_API_PROJECT, projectRequest, {
+  create(projectRequest, accountID) {
+    return axios.post(
+      NOCOCID_API_PROJECT + "/" + accountID + "/Projects/create",
+      projectRequest,
+      {
+        headers: authHeader(),
+      }
+    );
+  }
+  getAllProject(accountID) {
+    return axios.get(NOCOCID_API_PROJECT + "/" + accountID + "/Projects", {
       headers: authHeader(),
     });
   }
-  getAllProject() {
-    return axios.get(NOCOCID_API_PROJECT, { headers: authHeader() });
-  }
-  getProjectById(projectId) {
-    return axios.get(NOCOCID_API_PROJECT + "/" + projectId, {
-      headers: authHeader(),
-    });
+  getProjectById(projectId, accountID) {
+    return axios.get(
+      NOCOCID_API_PROJECT + "/" + accountID + "/Projects/" + projectId,
+      {
+        headers: authHeader(),
+      }
+    );
   }
 }
 

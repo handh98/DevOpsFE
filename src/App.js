@@ -16,6 +16,7 @@ import Repository from "./components/repository/repository";
 import ProjectDetail from "./components/project/projectDetail";
 import AuthorizationFilter from './components/authorizationFilter/authorizationFilter';
 
+
 class App extends Component {
   constructor(props) {
     super(props);
@@ -69,6 +70,7 @@ class App extends Component {
                   <Route path={"/register"} component={Register} />
                   <Route path={"/project"} component={Project} />
                   <Route path={"/create-project"} component={CreateProject} />
+                  <Route path={"/project-detail"} component={ProjectDetail} />
                   <Route
                     exact
                     path="/repository/:thirdPartyId"
@@ -111,6 +113,7 @@ class App extends Component {
               <Route path={"/register"} component={Register} />
               <Route path={"/project"} component={Project} />
               <Route path={"/create-project"} component={CreateProject} />
+              <Route path={"/project-detail"} component={ProjectDetail} />
               {/*<Route exact path="/profile" component={Profile} />
               <Route path="/user" component={UserManagement} />
               <Route path="/admin" component={AdminBoard} />

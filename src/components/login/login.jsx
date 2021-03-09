@@ -21,12 +21,12 @@ export default class Login extends Component {
 
     componentDidMount() {
         let search = window.location.search;
-        console.log("search", search);
         let params = new URLSearchParams(search);
+        // let submid_ = params.get('submit');
+        // console.log('submid?',submid);
         this.setState({
             submit_login: params.get('submit')
-        })
-
+        });
         const uri = thirdPartiesService.loginWithGitHubURI();
         if (uri) {
             this.setState({
@@ -75,10 +75,19 @@ export default class Login extends Component {
             Username: this.state.email,
             Password: this.state.password
         }
-        loginService.login(loginRequest).then(() => {
+        let login = loginService.login(loginRequest).then(() => {
+            this.props.history.push('/home');
+            window.location.reload();
+        });
+        let connect = loginService.loginConnectGit(loginRequest).then(() => {
             this.props.history.push('/home');
             window.location.reload();
         })
+        (this.state.submit_login)? (connect):(login);
+        
+
+
+
     }
     render() {
         const url = this.state.gitHubUri;
@@ -89,9 +98,9 @@ export default class Login extends Component {
                         <a href="/register" className="float-right btn btn-outline-primary">Sign up</a>
                         <h4 className="card-title mb-4 mt-1">Sign in</h4>
                         <p>
-                            {this.state.submit_login === 'connect' ? 
-                            <a href={'http://toan0701.ddns.net:9080/Nococid/api/Auth/connect-user?redirect_uri=https://localhost:3000/home'} className="btn btn-block btn-outline-primary"> Login with Github</a> :
-                             <a href={'' + url} className="btn btn-block btn-outline-primary"> Login with Github</a>}
+                            {this.state.submit_login === 'connect' ?
+                                '' :
+                                <a href={'' + url} className="btn btn-block btn-outline-primary"> Login with Github</a>}
 
                         </p>
                         <hr />

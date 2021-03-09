@@ -24,7 +24,8 @@ class CreateSprintModal extends React.Component {
     }
 
     componentDidMount() {
-        repositoryService.getAllRepositories().then((res) => {
+        let accountId =  localStorage.getItem('account_id');
+        repositoryService.getAllRepositories(accountId).then((res) => {
             this.setState({
                 repositories: res.data
             })
@@ -109,6 +110,14 @@ class CreateSprintModal extends React.Component {
         }
     }
 
+    updateRepositories(){
+        let accountId =  localStorage.getItem('account_id');
+        repositoryService.updateAllRepositories(accountId).then((res) => {
+            this.setState({
+                repositories: res.data
+            })
+        })
+    }
     render() {
         return (
             <>
@@ -145,8 +154,8 @@ class CreateSprintModal extends React.Component {
                                 type="datetime-local"
                                 name="startDate"
                                 step="1"
-                                onChange={this.onChangStartDate} 
-                                validations={[this.required]}/>
+                                onChange={this.onChangStartDate}
+                                validations={[this.required]} />
                         </div>
                         <div className="form-group">
                             <label htmlFor="startDate">End date:</label>
@@ -157,9 +166,13 @@ class CreateSprintModal extends React.Component {
                                 onChange={this.onChangEndDate}
                                 validations={[this.required]} />
                         </div>
+
+
+
                         <div className="form-group">
                             <label>Repository:
-                            <select value={this.state.repositoryId} onChange={this.onChangeRepositoryId}>
+                                
+                                <select value={this.state.repositoryId} onChange={this.onChangeRepositoryId}>
                                     <option>Select Repository </option>
                                     {this.state.repositories.map(element => (
                                         <option key={element.id} value={element.id} >{element.name}</option>
@@ -167,7 +180,15 @@ class CreateSprintModal extends React.Component {
                                     }
                                 </select>
                             </label>
+                            <button type="button" className="btn btn-default">
+                                    update
+                                </button>
                         </div>
+
+
+
+
+
                         <div className="form-group">
                             <button
                                 className="btn btn-primary btn-block"
@@ -176,7 +197,7 @@ class CreateSprintModal extends React.Component {
                                 {this.state.loading && (
                                     <span className="spinner-border spinner-border-sm"></span>
                                 )}
-                                <span>CreateSprint</span>
+                                <span>Create Sprint</span>
                             </button>
                         </div>
 

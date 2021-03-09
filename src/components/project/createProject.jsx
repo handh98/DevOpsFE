@@ -4,7 +4,7 @@ import Input from "react-validation/build/input";
 import ProjectService from '../../service/project_service/projectService';
 import ProjectTypeService from '../../service/project_service/projectTypeService';
 import '../home/sidebar/sidebarHome';
-
+import accountService from '../../service/account_service/accountService'
 class CreateProject extends Component {
     constructor(props) {
         super(props)
@@ -14,7 +14,8 @@ class CreateProject extends Component {
             startDate: "",
             endDate: "",
             projectTypeID: "",
-            projectTypes: []
+            projectTypes: [],
+            accounts: []
         }
 
     }
@@ -71,9 +72,14 @@ class CreateProject extends Component {
             EndDate: this.state.endDate,
             ProjectTypeId: this.state.projectTypeID
         };
-        ProjectService.create(projectRequest).then(
+
+        let account_id = localStorage.getItem('account_id');
+
+        ProjectService.create(projectRequest, account_id).then(
             (response) => {
-                console.log(response)
+                console.log('projetcid?', response.data)
+                this.props.history.push('/project-detail?projectId=' + response.data);
+                window.location.reload();
             },
             (error) => {
                 const responseMessage = error.response.data.message;

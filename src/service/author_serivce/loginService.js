@@ -10,11 +10,18 @@ class LoginSerivce {
       NOCID_API_ACCOUNT + "/login",
       loginRequest
     );
-    if (response.data.jwtToken) {
-      localStorage.setItem("user", JSON.stringify(response.data));
+    if (response.data.jwt) {
+      localStorage.setItem("jwt", response.data.jwt);
     }
     return response.data;
   }
+
+  loginConnectGit(loginRequest){    
+    const response = axios.post (NOCID_API_ACCOUNT + '/connect-user?redirect_uri=https://localhost:3000/home', loginRequest, {headers: authHeader()})
+    localStorage.setItem('is_connected', true);
+    return response.data;
+  }
+
   getGithubUri() {
     return axios.get(NOCOCID_API + "/Login/Github");
   }

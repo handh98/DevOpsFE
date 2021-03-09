@@ -6,6 +6,7 @@ import employeeService from '../../service/employee_service/employeeService';
 import ThirdPartiesService from '../../service/third_parties_service/thirdPartiesService'
 import githubRepoService from '../../service/githubrepository_service/githubRepoService';
 import accountService from '../../service/account_service/accountService';
+import Sidebar from '../home/sidebar/sidebar';
 
 
 export default class Home extends Component {
@@ -18,86 +19,18 @@ export default class Home extends Component {
             gitHubLoginURI: "",
             successMessage: "",
             errMessage: "",
-            isConnected: this.props.isConnectedParam
+            isConnected: ''
         }
 
     }
 
     componentDidMount() {
-        // let search = window.location.search;
-        // console.log("search", search);
-        // let params = new URLSearchParams(search);
-        // // let jwt = params.get('jwt');
-
-        // this.setState({
-        //     isConnected: params.get('is_connected')
-        // })
-
-        // accountService.getAccount().then((res) => {
-        //     console.log(res.data[0].id)
-        //     accountService.getProjects(res.data[0].id).then((res) => {
-        //         console.log(res.data)
-        //     })
-        // });
-
-
-        // let search = window.location.search;
-        // console.log("search", search);
-        // let params = new URLSearchParams(search);
-        // let account_id = params.get('account_id');
-        // let username = params.get('username');
-        // let jwt = params.get('jwt');
-        // console.log(params);
-        // const user = loginService.getCurrentUser();
-        // if (user) {
-        //     employeeService.getEmployeeById(user.employeeId).then((res) => {
-        //         this.setState({
-        //             employee: res.data,
-        //             user: user
-        //         })
-        //     })
-        // } else {
-        //     this.props.history.push('/');
-        //     window.location.reload();
-        // }
-        // const uri = ThirdPartiesService.getGitHubLoginURI();
-        // this.setState({
-        //     gitHubLoginURI: uri
-        // })
-        // let search = window.location.search;
-        // console.log("search", search);
-        // let params = new URLSearchParams(search);
-        // let account_id = params.get('account_id');
-        // let username = params.get('username');
-        // let jwt = params.get('jwt');
-
-        // if (account_id && username && jwt) {
-        //     params = {
-        //         jwtToken: jwt,
-        //         tokenType: "Bearer",
-        //         accountId: account_id
-        //     }
-
-        //     localStorage.setItem("user",params);
-        // }
-    }
-
-    connectWithGitHub = (params) => {
-        ThirdPartiesService.connectWithGitHub(params).then(() => {
-            this.setState({
-                successMessage: "You have already connect with git hub"
-            });
-            githubRepoService.refreshRepository(params.id).then((response) => {
-                console.log(response.data);
-            }, (error) => {
-                console.log(error.response.data);
-            })
-        }, (error) => {
-            this.setState({
-                errMessage: error.response.data.detail.message
-            })
+        accountService.getAccount().then((res) => {
+            localStorage.setItem("account_id", res.data[0].id);
         });
     }
+
+
     componentWillUnmount() {
 
     }
@@ -121,9 +54,10 @@ export default class Home extends Component {
         const username = this.state.employee.name
         return (
             <div>
+
                 <h1> Hello {username}</h1>
                 <hr />
-                {localStorage.getItem('is_connected') ?
+                {localStorage.getItem('is_connected') === 'False' ?
                     (<a href="/?submit=connect">Connect to Nococid account </a>) :
                     ('')
                 }
@@ -136,6 +70,7 @@ export default class Home extends Component {
                     <button type="submit">Logout</button>
                 </Form>
                 <p>{this.state.errMessage}</p>
+                <Sidebar />
             </div>
 
         )
